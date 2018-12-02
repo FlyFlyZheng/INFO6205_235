@@ -99,6 +99,7 @@ public class GA {
     private void hybridization(){
         Random random = new Random();
         for(int i=0; i<Config.POPULATION/2+1; i++){
+            System.out.println("The times of Hybridization is :"+ i);
             this.oneHybridization();
         }
     }
@@ -255,5 +256,5 @@ public class GA {
     }
 
 
->>>>>>> a1c36aeec3832f100f6d00e61547e12cbe19b592
+
 }

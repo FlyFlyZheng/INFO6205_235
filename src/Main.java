@@ -7,7 +7,7 @@ public class Main {
         ga.init();
 
         //evolove
-
+        ga.oneGenetic();
 
     }
 }

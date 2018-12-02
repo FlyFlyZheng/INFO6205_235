@@ -21,6 +21,7 @@ public class Robot implements Comparable<Robot>{
     //Phenotype
     private int score;
 
+    // all fitness of a generation plus to be 1
     private double fitness;
 
     public Robot(int stepNum, Point[][] map){
@@ -134,7 +135,7 @@ public class Robot implements Comparable<Robot>{
             Nums++;
         }
         score =result;
-        System.out.println("Total Score is: "+score);
+      //  System.out.println("Total Score is: "+score);
         return result;
     }
 
