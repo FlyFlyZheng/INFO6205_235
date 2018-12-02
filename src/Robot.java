@@ -31,7 +31,14 @@ public class Robot {
     //is wall: return false;
     //in bound: return true;
     private boolean inBound(int x, int y){
-        return false;
+        if(x<0 || x>10 || y<0 || y>10){
+            return false;
+        }
+        return true;
+    }
+
+    public int[] getSteps(){
+        return this.steps;
     }
 
 
