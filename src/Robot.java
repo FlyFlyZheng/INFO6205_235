@@ -19,6 +19,8 @@ public class Robot {
     //Phenotype
     private int score;
 
+    private double fitness;
+
     public Robot(int stepNum, Point[][] map){
         steps = new int[stepNum];
         this.map = map;
@@ -120,10 +122,9 @@ public class Robot {
             Nums++;
         }
         score =result;
-        System.out.print("Total Score is: "+score);
+        System.out.println("Total Score is: "+score);
         return result;
     }
-
 
 
 
@@ -141,5 +142,11 @@ public class Robot {
         return this.steps;
     }
 
+    public void setFitness(double fitness){
+        this.fitness = fitness;
+    }
 
+    public double getFitness() {
+         return this.fitness;
+    }
 }

@@ -39,4 +39,9 @@ public class GA {
         System.out.println("Init Robot List finished. Robot Number:"+Config.POPULATION+" STEP Number: "+Config.STEP_NUMBER);
     }
 
+
+    //Fitness
+    
+
+
 }
