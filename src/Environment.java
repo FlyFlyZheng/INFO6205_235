@@ -5,7 +5,6 @@ public class Environment {
     Point[][] map;
     int len= Config.LENGTH;
     public Environment(){
-
     }
 
     public void generateMap(){
@@ -33,7 +32,6 @@ public class Environment {
         while(calculateCupNumber(map)<= Config.CUP_NUM) {
             int randomX = random.nextInt(len);
             int randomY = random.nextInt(len);
-
             map[randomX][randomY].setStatus(Point.CUP);
 
         }
