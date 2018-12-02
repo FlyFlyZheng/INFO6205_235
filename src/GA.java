@@ -8,8 +8,8 @@ public class GA {
 
     private ArrayList<Robot> robotList;
     private ArrayList<Robot> sonRobotList;
-    public Robot bestRobot = null;
-    public int bestScore;
+    public Robot bestRobot = null;  
+    public int bestScore = Integer.MIN_VALUE;
     public int bestInheritance;
 
 
@@ -66,7 +66,7 @@ public class GA {
         Collections.sort(robotList);
         int plus = 0;
         if(robotList.get(0).getScore() < 0){
-            plus = 0-robotList.get(0).getScore();
+            plus = 0 - robotList.get(0).getScore();
         }
 
         int[] plusScores = new int[robotList.size()];
@@ -77,9 +77,10 @@ public class GA {
         }
 
         for(int i=0; i<robotList.size(); i++){
-            double fitness = plusScores[i]/sum;
+            double fitness = (double)plusScores[i]/sum;
             robotList.get(i).setFitness(fitness);
         }
+
     }
 
     public void evlove(){
@@ -104,10 +105,10 @@ public class GA {
     }
 
     private void hybridization(){
-        System.out.println("begin hybridization: ");
         Random random = new Random();
-        for(int i=0; i<Config.POPULATION/2+1; i++){
-            System.out.println("The times of Hybridization is :"+ i);
+
+        for(int i=0; i<Config.POPULATION/2; i++){
+
             this.oneHybridization();
         }
     }
@@ -125,6 +126,7 @@ public class GA {
         while(father == null || father.equals(best)){
             father = this.getParent();
         }
+
         int cnt=0;
         while(mother == null || father.equals(mother) || mother.equals(best)){
             if(cnt > Config.POPULATION/2){
@@ -267,6 +269,7 @@ public class GA {
         }
 
         if(isUpdate){
+            System.out.println("best scroe appear in Genetic:"+geneticNumber);
             System.out.println("Best Solution: "
                 + " \n genetic:" +  this.bestInheritance
                 + " \n Score:" + this.bestScore
