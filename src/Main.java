@@ -7,6 +7,12 @@ public class Main {
         ga.init();
 
         //evolove
+        ga.evlove();
+
+        System.out.println("After Evolove: "
+                + " \n genetic:" +  ga.bestInheritance
+                + " \n Score:" + ga.bestScore
+                + " \n steps:" + ga.bestRobot.printSteps());
 
 
     }
