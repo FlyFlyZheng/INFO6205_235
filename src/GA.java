@@ -25,6 +25,7 @@ public class GA {
 
     private void initRobotList(ArrayList<Robot> robotList){
         Random random = new Random();
+
         for(int i=0; i<Config.POPULATION; i++){
             Robot robot = new Robot(Config.STEP_NUMBER, map);
             int[] steps = robot.getSteps();
@@ -37,6 +38,16 @@ public class GA {
             robotList.add(robot);
         }
         System.out.println("Init Robot List finished. Robot Number:"+Config.POPULATION+" STEP Number: "+Config.STEP_NUMBER);
+        GetAvgScore();
     }
+    public float GetAvgScore(){
+        int total=0;
+        for(Robot r:robotList){
+            total+=r.calScore();
+        }
+        System.out.print("Avg Socre is "+total/Config.POPULATION);
+        return total/Config.POPULATION;
+    }
+
 
 }

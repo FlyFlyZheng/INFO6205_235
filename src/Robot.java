@@ -120,7 +120,7 @@ public class Robot {
             Nums++;
         }
         score =result;
-        System.out.print("Total Score is: "+score);
+        System.out.println("Total Score is: "+score);
         return result;
     }
 
