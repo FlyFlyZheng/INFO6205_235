@@ -7,6 +7,8 @@ public class Config {
     static int STEP_NUMBER = 200;
     static int POPULATION = 1000;
 
+    static int maxNumberOfGenerations = 10000;
+    static double VARIABLE_PERCENT=0.1;
 
 
 }
