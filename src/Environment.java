@@ -2,9 +2,20 @@ import java.util.Random;
 
 public class Environment {
 
-    Point[][] map;
+    private Point[][] map;
+
     int len= Config.LENGTH;
+
     public Environment(){
+<<<<<<< HEAD
+=======
+        generateMap();
+        printMap();
+    }
+
+    public Point[][] getMap(){
+        return map;
+>>>>>>> f0b31589313802504864a0745ac97f220ca51d7b
     }
 
     public void generateMap(){
@@ -29,14 +40,17 @@ public class Environment {
         Random random= new Random();
 
 
-        while(calculateCupNumber(map)<= Config.CUP_NUM) {
+        while(calculateCupNumber(map)< Config.CUP_NUM) {
             int randomX = random.nextInt(len);
             int randomY = random.nextInt(len);
             map[randomX][randomY].setStatus(Point.CUP);
 
         }
     }
-        private int calculateCupNumber(Point[][] map){
+
+
+
+    private int calculateCupNumber(Point[][] map){
         int res=0;
         for(int i=0;i<len;i++){
             for(int j=0;j<len;j++){
