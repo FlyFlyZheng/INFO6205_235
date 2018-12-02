@@ -31,7 +31,7 @@ public class Robot {
         int CurrentX=0;
         int CurrentY=0;
         int Nums=0;
-        while(Nums<=steps.length){
+        while(Nums<steps.length){
             Nums++;
             int i= steps[Nums];
 
@@ -129,7 +129,7 @@ public class Robot {
     //is wall: return false;
     //in bound: return true;
     private boolean inBound(int x, int y){
-        if(x<0 || x>10 || y<0 || y>10){
+        if(x<0 || x>9 || y<0 || y>9){
             return false;
         }
         return true;
