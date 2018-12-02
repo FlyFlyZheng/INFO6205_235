@@ -1,6 +1,8 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class Robot {
+public class Robot implements Comparable<Robot>{
 
     public static final int GO_UP = 0;
     public static final int GO_DOWN = 1;
@@ -19,9 +21,21 @@ public class Robot {
     //Phenotype
     private int score;
 
+    private double fitness;
+
     public Robot(int stepNum, Point[][] map){
         steps = new int[stepNum];
         this.map = map;
+    }
+
+    public Robot clone(){
+        Robot clone = new Robot(this.steps.length, this.map);
+        for(int i=0; i<this.steps.length; i++){
+            clone.steps[i] = this.steps[i];
+        }
+        clone.score = this.score;
+        clone.fitness = this.fitness;
+        return clone;
     }
 
     //Expression: mapping Genotype to Phenotype
@@ -127,7 +141,6 @@ public class Robot {
 
 
 
-
     //is wall: return false;
     //in bound: return true;
     private boolean inBound(int x, int y){
@@ -141,5 +154,24 @@ public class Robot {
         return this.steps;
     }
 
+    public int getScore(){
+        return this.score;
+    }
 
+    public void setFitness(double fitness){
+        this.fitness = fitness;
+    }
+
+    public double getFitness() {
+         return this.fitness;
+    }
+
+    @Override
+    public int compareTo(Robot o) {
+        return sign(this.score - o.score);
+    }
+
+    public int sign(int x){
+        return (x>0) ? 1 : ((x==0) ? 0: -1);
+    }
 }
