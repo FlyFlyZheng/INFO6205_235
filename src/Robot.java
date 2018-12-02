@@ -135,7 +135,7 @@ public class Robot implements Comparable<Robot>{
             Nums++;
         }
         score =result;
-      //  System.out.println("Total Score is: "+score);
+
         return result;
     }
 
@@ -165,6 +165,16 @@ public class Robot implements Comparable<Robot>{
 
     public double getFitness() {
          return this.fitness;
+    }
+
+    public String printSteps(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
+        for(int i=0; i<this.steps.length; i++){
+            sb.append(this.steps[i] + "->");
+        }
+        sb.append("\n");
+        return sb.toString();
     }
 
     @Override

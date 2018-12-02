@@ -6,8 +6,13 @@ public class Main {
         //init environment
         ga.init();
 
-        //evolove
-        ga.oneGenetic();
+        ga.evlove();
+
+        System.out.println("After Evolove: "
+                + " \n genetic:" +  ga.bestInheritance
+                + " \n Score:" + ga.bestScore
+                + " \n steps:" + ga.bestRobot.printSteps());
+
 
     }
 }

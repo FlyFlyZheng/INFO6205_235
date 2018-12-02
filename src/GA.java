@@ -8,7 +8,10 @@ public class GA {
 
     private ArrayList<Robot> robotList;
     private ArrayList<Robot> sonRobotList;
-    private Robot bestRobot = null;
+    public Robot bestRobot = null;
+    public int bestScore;
+    public int bestInheritance;
+
 
     public GA(){
     }
@@ -80,38 +83,35 @@ public class GA {
     }
 
     public void evlove(){
+        System.out.println("Begin to evlove: ");
         for(int i=0; i<Config.maxNumberOfGenerations; i++){
-            System.out.println("Genetic No: "+i);
-            this.oneGenetic();
+            System.out.println("Genetic No: "+(i+1));
+            this.oneGenetic(i+1);
         }
     }
 
-    public void oneGenetic(){
+    public void oneGenetic(int geneticNumber){
         this.sonRobotList = new ArrayList<>();
-
         //generate sonRobotList;
         this.hybridization();
         //mutation;
         this.mutationOnce();
-        //
+        //update robot list
+        this.updateRobotList();
+        //update best robot
+        this.updateBestRobot(geneticNumber);
+
     }
 
     private void hybridization(){
+        System.out.println("begin hybridization: ");
         Random random = new Random();
         for(int i=0; i<Config.POPULATION/2+1; i++){
             System.out.println("The times of Hybridization is :"+ i);
             this.oneHybridization();
         }
     }
-//
-//    private void oneGenetic(int geneticNumber){
-//        this.sonEntities = new ArrayList<>();
-//
-//        this.hybridization();
-//        this.variableOnce();
-//        this.updateEntity();
-//        this.chooes(geneticNumber);
-//    }
+
 
 
 
@@ -253,6 +253,25 @@ public class GA {
         }
         this.calFitness(this.robotList);
 
+    }
+
+    private void updateBestRobot(int geneticNumber){
+        boolean isUpdate = false;
+        for(int i=0; i<this.robotList.size(); i++){
+            if(this.robotList.get(i).getScore() > bestScore){
+                this.bestRobot = this.robotList.get(i).clone();
+                this.bestScore = this.robotList.get(i).getScore();
+                this.bestInheritance = geneticNumber;
+                isUpdate = true;
+            }
+        }
+
+        if(isUpdate){
+            System.out.println("Best Solution: "
+                + " \n genetic:" +  this.bestInheritance
+                + " \n Score:" + this.bestScore
+                + " \n steps:" + this.bestRobot.printSteps());
+        }
     }
 
 
