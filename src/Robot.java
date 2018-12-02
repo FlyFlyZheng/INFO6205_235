@@ -30,7 +30,7 @@ public class Robot {
 
     //is wall: return false;
     //in bound: return true;
-    private boolean inBound(){
+    private boolean inBound(int x, int y){
         return false;
     }
 
