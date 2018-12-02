@@ -31,12 +31,13 @@ public class Robot {
         int CurrentX=0;
         int CurrentY=0;
         int Nums=0;
-        while(Nums<=steps.length){
-            Nums++;
+        System.out.println(steps.length);
+        while(Nums<steps.length){
+
             int i= steps[Nums];
 
-            System.out.print("X position is: "+CurrentX);
-            System.out.print("Y position is: "+CurrentX);
+            //System.out.print("X position is: "+CurrentX);
+            //System.out.print("Y position is: "+CurrentX);
             switch (i){
                 case GO_UP:
                     if(inBound(CurrentX,CurrentY+1))
@@ -116,6 +117,7 @@ public class Robot {
                 case DO_NOTHING:
                     break;
             }
+            Nums++;
         }
         score =result;
         System.out.print("Total Score is: "+score);
@@ -129,7 +131,7 @@ public class Robot {
     //is wall: return false;
     //in bound: return true;
     private boolean inBound(int x, int y){
-        if(x<0 || x>10 || y<0 || y>10){
+        if(x<0 || x>9 || y<0 || y>9){
             return false;
         }
         return true;

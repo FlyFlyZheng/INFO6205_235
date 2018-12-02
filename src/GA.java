@@ -10,6 +10,9 @@ public class GA {
     private ArrayList<Robot> robotList;
     private ArrayList<Robot> sonRobotList;
 
+    public GA(){
+        init();
+    }
 
     public void init(){
         Environment env = new Environment();
