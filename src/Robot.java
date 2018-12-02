@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Robot {
 
     public static final int GO_UP = 0;
@@ -25,7 +27,99 @@ public class Robot {
     //Expression: mapping Genotype to Phenotype
     public int calScore(){
         //TODO
-        return -1;
+        int result = 0;
+        int CurrentX=0;
+        int CurrentY=0;
+        int Nums=0;
+        while(Nums<=steps.length){
+            Nums++;
+            int i= steps[Nums];
+
+            System.out.print("X position is: "+CurrentX);
+            System.out.print("Y position is: "+CurrentX);
+            switch (i){
+                case GO_UP:
+                    if(inBound(CurrentX,CurrentY+1))
+                    {
+                        CurrentY++;
+                    }else{
+                        result -=5;
+                    }
+                    break;
+                case GO_DOWN:
+                    if(inBound(CurrentX,CurrentY-1))
+                    {
+                        CurrentY--;
+                    }else{
+                        result -=5;
+                    }
+                    break;
+                case GO_LEFT:
+                    if(inBound(CurrentX-1,CurrentY))
+                    {
+                        CurrentX--;
+                    }else{
+                        result -=5;
+                    }
+                    break;
+                case GO_RIGHT:
+                    if(inBound(CurrentX+1,CurrentY))
+                    {
+                        CurrentX++;
+                    }else{
+                        result -=5;
+                    }
+                    break;
+                case GO_RANDOM:
+                    int random = new Random().nextInt(4);
+                    if(random==0){
+                        if(inBound(CurrentX,CurrentY+1))
+                        {
+                            CurrentY++;
+                        }else{
+                            result -=5;
+                        }
+
+                    }else if(random==1){
+                        if(inBound(CurrentX,CurrentY-1))
+                        {
+                            CurrentY--;
+                        }else{
+                            result -=5;
+                        }
+
+                    }else if(random==2){
+                        if(inBound(CurrentX-1,CurrentY))
+                        {
+                            CurrentX--;
+                        }else{
+                            result -=5;
+                        }
+
+                    }else {
+                        if(inBound(CurrentX+1,CurrentY))
+                        {
+                            CurrentX++;
+                        }else{
+                            result -=5;
+                        }
+
+                    }
+                    break;
+                case PICK:
+                    if(map[CurrentX][CurrentY].getStatus()==Point.IS_EMPLY){
+                        result-=1;
+                    }else{
+                        result+=10;
+                    }
+                    break;
+                case DO_NOTHING:
+                    break;
+            }
+        }
+        score =result;
+        System.out.print("Total Score is: "+score);
+        return result;
     }
 
 

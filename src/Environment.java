@@ -7,15 +7,13 @@ public class Environment {
     int len= Config.LENGTH;
 
     public Environment(){
-<<<<<<< HEAD
-=======
+
         generateMap();
         printMap();
     }
 
     public Point[][] getMap(){
         return map;
->>>>>>> f0b31589313802504864a0745ac97f220ca51d7b
     }
 
     public void generateMap(){
