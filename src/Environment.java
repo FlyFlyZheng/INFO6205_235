@@ -9,7 +9,7 @@ public class Environment {
     public Environment(){
 
         generateMap();
-        printMap();
+        //printMap();
     }
 
     public Point[][] getMap(){
@@ -48,7 +48,7 @@ public class Environment {
 
 
 
-    private int calculateCupNumber(Point[][] map){
+    public int calculateCupNumber(Point[][] map){
         int res=0;
         for(int i=0;i<len;i++){
             for(int j=0;j<len;j++){
@@ -57,25 +57,26 @@ public class Environment {
                 }
             }
         }
-         return res;
+        return res;
 
     }
 
-    public void printMap(){
-        if(map == null){
-            System.out.println("map is not generated");
-            return;
-        }
-        System.out.print("--------------Map----------------\n");
-        int len = Config.LENGTH;
-        for(int i=0; i<len; i++){
-            for(int j=0; j<len; j++){
-                System.out.print(map[i][j].getStatus()+" ");
-            }
-            System.out.print("\n");
-        }
-        System.out.print("---------------------------------\n");
-    }
+//    public void printMap(){
+//        if(map == null){
+//            System.out.println("map is not generated");
+//            return;
+//        }
+//        System.out.print("--------------Map----------------\n");
+//        int len = Config.LENGTH;
+//        for(int i=0; i<len; i++){
+//            for(int j=0; j<len; j++){
+//                System.out.print(map[i][j].getStatus()+" ");
+//            }
+//            System.out.print("\n");
+//        }
+//        System.out.print("---------------------------------\n");
+//    }
 
 
 }
+

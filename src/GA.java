@@ -2,35 +2,38 @@ import javax.swing.*;
 import java.rmi.ConnectIOException;
 import java.util.*;
 
+
 public class GA {
 
     Point[][] map;
-
     private ArrayList<Robot> robotList;
     private ArrayList<Robot> sonRobotList;
-    public Robot bestRobot = null;  
+    public Robot bestRobot = null;
     public int bestScore = Integer.MIN_VALUE;
     public int bestInheritance;
-
+    Random random=new Random();
+    Environment env;
 
     public GA(){
     }
 
+    public ArrayList<Robot> getRobotList() {
+        return robotList;
+    }
 
-
-    public void init(){
-        Environment env = new Environment();
+    public ArrayList<Robot> init(){
+        env = new Environment();
         map = env.getMap();
 
         robotList = new ArrayList<>();
-        initRobotList(robotList);
-
+        initRobotList(robotList,Config.POPULATION);
+        return robotList;
     }
 
-    private void initRobotList(ArrayList<Robot> robotList){
+    public void initRobotList(ArrayList<Robot> robotList,int polulation){
         Random random = new Random();
 
-        for(int i=0; i<Config.POPULATION; i++){
+        for(int i=0; i<polulation; i++){
             Robot robot = new Robot(Config.STEP_NUMBER, map);
             int[] steps = robot.getSteps();
             for(int j=0; j< Config.STEP_NUMBER; j++){
@@ -42,147 +45,160 @@ public class GA {
             robotList.add(robot);
         }
         calFitness(robotList);
-        System.out.println("Init Robot List finished. Robot Number:"+Config.POPULATION+" STEP Number: "+Config.STEP_NUMBER);
-        GetAvgScore();
+        //System.out.println("Init Robot List finished. Robot Number:"+Config.POPULATION+" STEP Number: "+Config.STEP_NUMBER);
+        GetAvgScore(this.robotList);
     }
-    public float GetAvgScore(){
-        int total=0;
-        for(Robot r:robotList){
+    public float GetAvgScore(ArrayList<Robot> rlist){
+        float total=0;
+        for(Robot r:rlist){
             total+=r.calScore();
         }
-        System.out.print("Avg Socre is "+total/Config.POPULATION);
+        // System.out.println("Avg Socre is "+total/Config.POPULATION);
         return total/Config.POPULATION;
     }
 
-
-
-    //Fitness
-    private void calFitness(ArrayList<Robot> robotList){
-        if(robotList == null){
+    public void calFitness(ArrayList<Robot> robotList) {
+        if (robotList == null) {
             return;
         }
-
         //get plus number
         Collections.sort(robotList);
+
+
         int plus = 0;
-        if(robotList.get(0).getScore() < 0){
+        if (robotList.get(0).getScore() < 0) {
             plus = 0 - robotList.get(0).getScore();
         }
 
         int[] plusScores = new int[robotList.size()];
         int sum = 0;
-        for(int i=0; i<robotList.size(); i++){
+
+        for (int i = 0; i < robotList.size(); i++) {
             plusScores[i] = robotList.get(i).getScore() + plus;
-            sum+=plusScores[i];
+            sum += plusScores[i];
         }
 
-        for(int i=0; i<robotList.size(); i++){
-            double fitness = (double)plusScores[i]/sum;
+
+        float a=0;
+        for (int i = 0; i < robotList.size(); i++) {
+            float fitness = (float) plusScores[i] / sum;
             robotList.get(i).setFitness(fitness);
+//            System.out.println("Socre is"+  robotList.get(i).getScore());
+//            System.out.println("Fitness is"+  robotList.get(i).getFitness());
+
+            a=a+robotList.get(i).getFitness();
         }
+        // Print(a);
 
     }
 
-    public void evlove(){
-        System.out.println("Begin to evlove: ");
-        for(int i=0; i<Config.maxNumberOfGenerations; i++){
-            System.out.println("Genetic No: "+(i+1));
-            this.oneGenetic(i+1);
+    public void evlove(int x){
+        for(int i=0;i<x;i++){
+            if(GetAvgScore(this.getRobotList())<Config.STEP_NUMBER*9) {
+                oneGeneration(x);
+            }else {
+                return;
+            }
         }
     }
 
-    public void oneGenetic(int geneticNumber){
-        this.sonRobotList = new ArrayList<>();
+    public void oneGeneration(int x){
+        GetAvgScore(robotList);
+        this.sonRobotList = new ArrayList<>(Config.POPULATION);
+
         //generate sonRobotList;
         this.hybridization();
-        //mutation;
-        this.mutationOnce();
-        //update robot list
-        this.updateRobotList();
-        //update best robot
-        this.updateBestRobot(geneticNumber);
+
+        mutationOnce();
+        this.robotList=this.updateRobotList();
+
+        calFitness(robotList);
+
+
+        Collections.sort(robotList);
+        Collections.reverse(robotList);
+        this.bestRobot=robotList.get(0);
+        GetAvgScore(robotList);
+
+
+        Collections.sort(robotList);
+        Collections.reverse(robotList);
+        if(this.bestScore<robotList.get(0).getScore()){
+            bestRobot=robotList.get(0);
+            bestScore=robotList.get(0).getScore();
+            bestInheritance=x;
+        }
+
+
+
+    }
+    public void hybridization(){
+
+        while(sonRobotList.size()<=1000){
+            oneHybridization();
+        }
+        Collections.sort(sonRobotList);
 
     }
 
-    private void hybridization(){
-        Random random = new Random();
+    public void oneHybridization(){
+        //Print("Size of the son list"+sonRobotList.size());
+        Robot father= this.getParent();
+        Robot mother= this.getParent();
 
-        for(int i=0; i<Config.POPULATION/2; i++){
-
-            this.oneHybridization();
-        }
-    }
-
-
-
-
-    //generate next generation to sonRobotList
-    private void oneHybridization(){
-        //get Parent
-        Robot father = this.getParent();
-        Robot mother = this.getParent();
-        Robot best = this.getBestParent();
-
-        while(father == null || father.equals(best)){
-            father = this.getParent();
+        while(mother.equals(father)){
+            father= this.getParent();
         }
 
-        int cnt=0;
-        while(mother == null || father.equals(mother) || mother.equals(best)){
-            if(cnt > Config.POPULATION/2){
-                break;
-            }
-            cnt ++;
-            mother = this.getParent();
-        }
+        Robot[] twoSon=crossOver(father,mother);
 
-        //crossOver
-        Robot[] children = crossOver(father, mother);
-        if(children != null){
-            this.sonRobotList.add(children[0]);
-            this.sonRobotList.add(children[1]);
-        }
+
+        sonRobotList.add(twoSon[0]);
+        sonRobotList.add(twoSon[1]);
 
     }
 
-    //轮盘赌选择Parent
-    private Robot getParent(){
+    public Robot getParent(){
 
         Collections.shuffle(robotList);
+        float a= (float) 0.999;
+        float percent=random.nextFloat();
+        while(percent>a){
+            percent=random.nextFloat();
+        }
+        float totalOfFitness=0;
 
-        Random random = new Random();
-        double selectedPercent = random.nextDouble();
-        double distributionPercent = 0.0;
-        for(int i=0; i<robotList.size(); i++){
-            distributionPercent += this.robotList.get(i).getFitness();
-            if(distributionPercent > selectedPercent){
-                return this.robotList.get(i);
+        int i =0;
+        for(Robot r:robotList){
+            totalOfFitness+=r.getFitness();
+            i++;
+
+            if(totalOfFitness-percent>0){
+                return r;
             }
         }
+        Print("Can not find a parent ?");
         return null;
+
+
     }
 
-    private Robot getBestParent(){
-        if(this.bestRobot == null){
-            Robot bestParent = this.robotList.get(0).clone();
-            for(int i=0; i<this.robotList.size(); i++){
-                if(this.robotList.get(i).getScore() > bestParent.getScore()){
-                    bestParent = this.robotList.get(i);
-                }
-            }
-            return bestParent;
-        }else{
-            return this.bestRobot.clone();
-        }
-    }
 
-    private Robot[] crossOver(Robot father, Robot mother){
+    public Robot[] crossOver(Robot father, Robot mother){
         if(father == null || mother == null || father.equals(mother)){
+            Print("In the crossOver Method , the mother or father is null!");
             return null;
         }
+//
+//        Print(father);
+//        Print("\n");
+//        Print(mother);
+
+
         //Get Cross Start Index
         Random random = new Random();
         int crossStartIndex = random.nextInt(Config.STEP_NUMBER);
+
         int crossEndIndex = random.nextInt(Config.STEP_NUMBER);
         while(crossEndIndex == crossStartIndex){
             crossEndIndex = random.nextInt(Config.STEP_NUMBER);
@@ -195,20 +211,58 @@ public class GA {
 
         //swap crossStartIndex -> crossEndIndex
         Robot[] children = new Robot[2];
-        Robot fatherClone = father.clone();
-        Robot motherClone = mother.clone();
+        Robot firstchild = father.clone();
+        Robot secondchild = mother.clone();
         for(int i=crossStartIndex; i<=crossEndIndex; i++){
-            int temp = fatherClone.getSteps()[i];
-            fatherClone.getSteps()[i] = motherClone.getSteps()[i];
-            motherClone.getSteps()[i] = temp;
+            int temp = firstchild.getSteps()[i];
+            firstchild.getSteps()[i] = secondchild.getSteps()[i];
+            secondchild.getSteps()[i] = temp;
         }
-        children[0] = fatherClone;
-        children[1] = motherClone;
+        firstchild.calScore();
+        secondchild.calScore();
+        children[0] = firstchild;
+        children[1] = secondchild;
+
         return children;
     }
 
+
+
+    public ArrayList<Robot> updateRobotList(){
+        ArrayList<Robot> bigList= new ArrayList<>(Config.POPULATION*2);
+        ArrayList<Robot> resList= new ArrayList<>(Config.POPULATION*2);
+
+        bigList.addAll(sonRobotList);
+        bigList.addAll(robotList);
+        Collections.sort(bigList);
+        Collections.reverse(bigList);
+
+        resList.add(bigList.get(0));
+        //Choose some entity of first half to not be added
+        Set<Integer> fountset= new HashSet<>();
+        while(fountset.size()<51){
+            fountset.add(random.nextInt(1000));
+        }
+
+        for(int i=0;i<1000;i++){
+            if(!fountset.contains(i)){
+                resList.add(bigList.get(i));
+            }
+            else{
+                continue;
+            }
+        }
+
+
+        while(resList.size()<1000){
+            resList.add(bigList.get(1000+random.nextInt(1000)));
+        }
+
+        return  resList;
+
+    }
     //mutation Once
-    private void mutationOnce(){
+    public void mutationOnce(){
         Random random = new Random();
         double percent = random.nextDouble();
         for(Robot robot: this.sonRobotList){
@@ -226,57 +280,25 @@ public class GA {
         robot.getSteps()[muationIndex] = mutationValue;
     }
 
-    private void updateRobotList(){
 
-        if(sonRobotList == null){
-            return;
-        }
 
-        //update sonRobotList detailed info
-        for(Robot robot: sonRobotList){
-            robot.calScore();
-        }
-        this.calFitness(sonRobotList);
-
-        //generate next geneation
-        List<Robot> allRobots = new ArrayList<>();
-        allRobots.addAll(robotList);
-        allRobots.addAll(sonRobotList);
-        Collections.sort(allRobots);
-
-        List<Robot> bestRobots = new ArrayList<>();
-        for(int i=0; i<Config.POPULATION; i++){
-            bestRobots.add(allRobots.get(i).clone());
-        }
-
-        Collections.shuffle(bestRobots);
-        for(int i=0; i<Config.POPULATION; i++){
-            this.robotList.set(i, bestRobots.get(i));
-        }
-        this.calFitness(this.robotList);
-
+    private static void Print(String s){
+        System.out.println(s);
     }
-
-    private void updateBestRobot(int geneticNumber){
-        boolean isUpdate = false;
-        for(int i=0; i<this.robotList.size(); i++){
-            if(this.robotList.get(i).getScore() > bestScore){
-                this.bestRobot = this.robotList.get(i).clone();
-                this.bestScore = this.robotList.get(i).getScore();
-                this.bestInheritance = geneticNumber;
-                isUpdate = true;
-            }
-        }
-
-        if(isUpdate){
-            System.out.println("best scroe appear in Genetic:"+geneticNumber);
-            System.out.println("Best Solution: "
-                + " \n genetic:" +  this.bestInheritance
-                + " \n Score:" + this.bestScore
-                + " \n steps:" + this.bestRobot.printSteps());
+    private static void Print(Float s){
+        System.out.println(s);
+    }
+    private static void Print(int s){
+        System.out.println(s);
+    }
+    private static void Print(Robot r){
+        for(int i:r.getSteps()){
+            System.out.print(i+"->");
         }
     }
-
-
 
 }
+
+
+
+

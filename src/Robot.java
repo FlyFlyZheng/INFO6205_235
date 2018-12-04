@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Random;
 
 public class Robot implements Comparable<Robot>{
@@ -22,11 +21,15 @@ public class Robot implements Comparable<Robot>{
     private int score;
 
     // all fitness of a generation plus to be 1
-    private double fitness;
+    private float fitness;
 
     public Robot(int stepNum, Point[][] map){
         steps = new int[stepNum];
         this.map = map;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public Robot clone(){
@@ -43,8 +46,8 @@ public class Robot implements Comparable<Robot>{
     public int calScore(){
         //TODO
         int result = 0;
-        int CurrentX=0;
-        int CurrentY=0;
+        int CurrentX=5;
+        int CurrentY=5;
         int Nums=0;
 
         while(Nums<steps.length){
@@ -123,10 +126,12 @@ public class Robot implements Comparable<Robot>{
                     }
                     break;
                 case PICK:
-                    if(map[CurrentX][CurrentY].getStatus()==Point.IS_EMPLY){
+                    if(map[CurrentX][CurrentY].getStatus()== Point.IS_EMPLY){
                         result-=1;
                     }else{
                         result+=10;
+                        //  generateANewNode(map,CurrentX,CurrentY);
+
                     }
                     break;
                 case DO_NOTHING:
@@ -141,7 +146,10 @@ public class Robot implements Comparable<Robot>{
 
 
 
-
+    private void generateANewNode(Point[][] map,int x,int y){
+        map[x][y].setStatus(Point.IS_EMPLY);
+        map[Config.LENGTH-x-1][Config.LENGTH-y-1].setStatus(Point.CUP);
+    }
     //is wall: return false;
     //in bound: return true;
     private boolean inBound(int x, int y){
@@ -159,12 +167,12 @@ public class Robot implements Comparable<Robot>{
         return this.score;
     }
 
-    public void setFitness(double fitness){
+    public void setFitness(float fitness){
         this.fitness = fitness;
     }
 
-    public double getFitness() {
-         return this.fitness;
+    public float getFitness() {
+        return this.fitness;
     }
 
     public String printSteps(){
@@ -179,10 +187,10 @@ public class Robot implements Comparable<Robot>{
 
     @Override
     public int compareTo(Robot o) {
-        return sign(this.score - o.score);
+        return sign(o.score - this.score);
     }
 
     public int sign(int x){
-        return (x>0) ? 1 : ((x==0) ? 0: -1);
+        return (x<0) ? 1 : ((x==0) ? 0: -1);
     }
 }
