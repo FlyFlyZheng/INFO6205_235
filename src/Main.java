@@ -1,10 +1,18 @@
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 public class Main {
+
+    private static final Logger logger = LogManager.getLogger(Main.class);
+
 
     public static void main(String[] args){
         GA ga = new GA();
+        logger.error("Error msg");
 
         //init environment
         ga.init();
+
 
         Print(ga.getRobotList().get(12).getScore());
         Print(ga.getRobotList().get(121).getScore());

@@ -7,11 +7,7 @@ import static org.junit.Assert.*;
 
 public class GATest {
 
-
-
     GA ga;
-
-
 
     @org.junit.Before
     public void setUp() throws Exception {

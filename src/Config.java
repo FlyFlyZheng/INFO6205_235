@@ -1,3 +1,5 @@
+import org.apache.logging.log4j.core.Logger;
+
 public class Config {
 
     static int LENGTH = 10;
