@@ -10,3 +10,6 @@ This project is for the path planning of cleanner robot of a specfic map, with G
 ## Team Info
 * Zheng Liu: [liu.zheng4@husky.neu.edu](liu.zheng4@husky.neu.edu)
 * Yang Li : [li.yang5@husky.neu.edu](li.yang5@husky.neu.edu)
+
+## Director
+* Robin Hillyard
