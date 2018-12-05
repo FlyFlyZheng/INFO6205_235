@@ -1,5 +1,7 @@
 # INFO6250_FinalProject
 
+## What problem we trying to slove
+
 ## About
 This is final project for Data Structure and Algorithm lecture. 
 
