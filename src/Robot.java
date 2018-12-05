@@ -1,7 +1,11 @@
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.Random;
 
 public class Robot implements Comparable<Robot>{
+    private static final Logger logger = LogManager.getLogger(Main.class);
 
     public static final int GO_UP = 0;
     public static final int GO_DOWN = 1;
@@ -24,6 +28,7 @@ public class Robot implements Comparable<Robot>{
     private float fitness;
 
     public Robot(int stepNum, Point[][] map){
+
         steps = new int[stepNum];
         this.map = map;
     }

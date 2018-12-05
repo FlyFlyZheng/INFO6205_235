@@ -1,9 +1,14 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import sun.rmi.runtime.Log;
+
 import javax.swing.*;
 import java.rmi.ConnectIOException;
 import java.util.*;
 
 
 public class GA {
+    private static final Logger logger = LogManager.getLogger(Main.class);
 
     Point[][] map;
     private ArrayList<Robot> robotList;
@@ -22,9 +27,10 @@ public class GA {
     }
 
     public ArrayList<Robot> init(){
+        logger.info("In GA.init method, set up envirnoment");
         env = new Environment();
         map = env.getMap();
-
+        logger.info("In GA.init method, init the orgin robot list");
         robotList = new ArrayList<>();
         initRobotList(robotList,Config.POPULATION);
         return robotList;
@@ -44,9 +50,13 @@ public class GA {
             robot.calScore();
             robotList.add(robot);
         }
+        logger.info("For the first generate of robots, calculate their fitness");
         calFitness(robotList);
         //System.out.println("Init Robot List finished. Robot Number:"+Config.POPULATION+" STEP Number: "+Config.STEP_NUMBER);
-        GetAvgScore(this.robotList);
+        logger.info("For the first generate of robots, calculate the Avg Score of them");
+
+        float ga=GetAvgScore(this.robotList);
+        logger.info("The Avg Score is :"+ga);
     }
     public float GetAvgScore(ArrayList<Robot> rlist){
         float total=0;
@@ -73,8 +83,9 @@ public class GA {
         int[] plusScores = new int[robotList.size()];
         int sum = 0;
 
+
         for (int i = 0; i < robotList.size(); i++) {
-            plusScores[i] = robotList.get(i).getScore() + plus;
+            plusScores[i] = robotList.get(i).getScore()+plus;
             sum += plusScores[i];
         }
 
@@ -88,14 +99,18 @@ public class GA {
 
             a=a+robotList.get(i).getFitness();
         }
+
         // Print(a);
 
     }
 
     public void evlove(int x){
+
+        logger.info("Begin to evlove for "+x+" generaion");
         for(int i=0;i<x;i++){
+
             if(GetAvgScore(this.getRobotList())<Config.STEP_NUMBER*9) {
-                oneGeneration(x);
+                oneGeneration(i);
             }else {
                 return;
             }
@@ -103,6 +118,7 @@ public class GA {
     }
 
     public void oneGeneration(int x){
+        logger.info("The Avg Score of the "+x+ " generation is "+ GetAvgScore(robotList));
         GetAvgScore(robotList);
         this.sonRobotList = new ArrayList<>(Config.POPULATION);
 
@@ -118,15 +134,17 @@ public class GA {
         Collections.sort(robotList);
         Collections.reverse(robotList);
         this.bestRobot=robotList.get(0);
-        GetAvgScore(robotList);
+
 
 
         Collections.sort(robotList);
         Collections.reverse(robotList);
         if(this.bestScore<robotList.get(0).getScore()){
+            logger.info("Update Best");
             bestRobot=robotList.get(0);
             bestScore=robotList.get(0).getScore();
             bestInheritance=x;
+            logger.info(x+" Is the bestInheritance Currently");
         }
 
 
@@ -186,13 +204,10 @@ public class GA {
 
     public Robot[] crossOver(Robot father, Robot mother){
         if(father == null || mother == null || father.equals(mother)){
-            Print("In the crossOver Method , the mother or father is null!");
+            logger.error("In crossOvre method, the father or mother is null!");
             return null;
         }
-//
-//        Print(father);
-//        Print("\n");
-//        Print(mother);
+
 
 
         //Get Cross Start Index

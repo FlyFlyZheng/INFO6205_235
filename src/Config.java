@@ -1,7 +1,8 @@
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 
 public class Config {
-
+    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(Main.class);
     static int LENGTH = 10;
     static int CUP_NUM = 30;
 

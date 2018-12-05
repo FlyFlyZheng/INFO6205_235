@@ -1,4 +1,9 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Point {
+
+    private static final Logger logger = LogManager.getLogger(Main.class);
     public Point(int x, int y){
         this.x=x;
         this.y=y;

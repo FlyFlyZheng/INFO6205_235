@@ -8,7 +8,10 @@ public class Main {
 
     public static void main(String[] args){
         GA ga = new GA();
-        logger.error("Error msg");
+
+
+
+
 
         //init environment
         ga.init();
@@ -20,10 +23,22 @@ public class Main {
 
         ga.evlove(1000);
 
+
+        StringBuilder stringBuilder= new StringBuilder();
+
+        for(int i: ga.bestRobot.getSteps()) {
+            stringBuilder.append(i);
+            stringBuilder.append("->");
+        }
+
+        logger.info("After Evolove");
+        logger.info("Best entity appeared in Genetic"+ ga.bestInheritance);
+        logger.info("The best Score is "+ga.bestScore);
+        logger.info("The best track is "+ stringBuilder);
+
         System.out.println("After Evolove: "
                 + " \n genetic:" +  ga.bestInheritance
                 + " \n Score:" + ga.bestScore);
-        //    + " \n steps:" + ga.bestRobot.printSteps());
 
     }
 
