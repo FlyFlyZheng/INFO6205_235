@@ -9,6 +9,7 @@ public class Environment {
     private Point[][] map;
 
     int len= Config.LENGTH;
+    int cupNum=0;
 
     public Environment(){
         logger.info("Enviroment init");
@@ -43,11 +44,17 @@ public class Environment {
         Random random= new Random();
 
         logger.info("For the map, set servel cups in random posistion of the map ");
-        while(calculateCupNumber(map)< Config.CUP_NUM) {
+
+        int i=0;
+
+        while(i< Config.CUP_NUM) {
             int randomX = random.nextInt(len);
             int randomY = random.nextInt(len);
+            if(map[randomX][randomY].getStatus()!=Point.CUP)
+            {
+                i++;
             map[randomX][randomY].setStatus(Point.CUP);
-
+            }
         }
     }
 
@@ -63,6 +70,7 @@ public class Environment {
                 }
             }
         }
+        this.cupNum=res;
         return res;
 
     }

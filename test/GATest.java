@@ -16,10 +16,10 @@ public class GATest {
     }
     @Test
     public void init() {
-
         assertTrue(ga.map.length==Config.LENGTH);
         assertTrue(ga.map[1].length==Config.LENGTH);
-        assertTrue(ga.env.calculateCupNumber(ga.map)==Config.CUP_NUM);
+
+        assertTrue(ga.env.cupNum==Config.CUP_NUM);
 
     }
 
@@ -65,6 +65,7 @@ public class GATest {
         float third =ga.GetAvgScore(ga.getRobotList());
         ga.evlove(300);
         float fourth =ga.GetAvgScore(ga.getRobotList());
+        //For this test, in most of times it would passed, indicate that thhe speed of evlove is slowing down after multiple generations
         assertTrue(second-first>third-second);
         assertTrue(third-second>fourth-third);
     }
@@ -99,7 +100,7 @@ public class GATest {
 
     @Test
     public void crossOver(){
-        System.out.println("Number of RobotList is "+ ga.getRobotList());
+        System.out.println("Number of RobotList is "+ ga.getRobotList().size());
 
         Robot father = ga.getParent();
         Robot mother = ga.getParent();

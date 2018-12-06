@@ -21,7 +21,7 @@ public class Main {
         Print(ga.getRobotList().get(121).getScore());
         //ga.calFitness(ga.getRobotList());
 
-        ga.evlove(1000);
+        ga.evlove(10000);
 
 
         StringBuilder stringBuilder= new StringBuilder();

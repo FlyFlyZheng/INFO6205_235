@@ -51,8 +51,8 @@ public class Robot implements Comparable<Robot>{
     public int calScore(){
         //TODO
         int result = 0;
-        int CurrentX=5;
-        int CurrentY=5;
+        int CurrentX=0;
+        int CurrentY=0;
         int Nums=0;
 
         while(Nums<steps.length){
@@ -135,7 +135,7 @@ public class Robot implements Comparable<Robot>{
                         result-=1;
                     }else{
                         result+=10;
-                        //  generateANewNode(map,CurrentX,CurrentY);
+                        generateANewNode(map,CurrentX,CurrentY);
 
                     }
                     break;

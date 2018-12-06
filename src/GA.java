@@ -30,6 +30,9 @@ public class GA {
         logger.info("In GA.init method, set up envirnoment");
         env = new Environment();
         map = env.getMap();
+
+        System.out.println("The Cups : "+ env.calculateCupNumber(env.getMap()));
+
         logger.info("In GA.init method, init the orgin robot list");
         robotList = new ArrayList<>();
         initRobotList(robotList,Config.POPULATION);
