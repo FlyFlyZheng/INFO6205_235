@@ -19,8 +19,8 @@ To resolve this problem, we propose an evolutionary approach based on Genetic Al
 
 
 ## Team Info
-* Zheng Liu: [liu.zheng4@husky.neu.edu](liu.zheng4@husky.neu.edu)
-* Yang Li : [li.yang5@husky.neu.edu](li.yang5@husky.neu.edu)
+* Zheng Liu: [liu.zheng4@husky.neu.edu](liu.zheng4@husky.neu.edu) 001826884
+* Yang Li : [li.yang5@husky.neu.edu](li.yang5@husky.neu.edu) 001811572
 
 ## Director
 * Robin Hillyard
